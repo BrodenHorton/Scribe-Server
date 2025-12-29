@@ -10,9 +10,10 @@ const port = 3000;
 const masterKey = '4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT';
 const assemblyAiApiKey = 'b87610c4a70644f6a3abfc216e9a7204';
 
+var micCount = 1;
 var speechBlocks = [];
 
-const run = async () => {
+const run = async (audioDeviceIndex) => {
   const client = new AssemblyAI({
     // Replace with your chosen API key, this is the "default" account api key
     apiKey: assemblyAiApiKey
@@ -105,7 +106,7 @@ setInterval(() => {
             count++;
           }
         });
-}, 15000);
+}, 10000);
 
 
 
