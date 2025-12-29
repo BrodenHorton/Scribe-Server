@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npx patch-package",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Broden Horton",
