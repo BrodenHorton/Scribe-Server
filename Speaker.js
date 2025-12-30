@@ -6,7 +6,7 @@ export { Speaker };
 
 class Speaker {
     inputDeviceIndex = 0;
-    speechBlocks = []
+    speechBlocks = [];
     
     constructor(inputDeviceIndex) {
         this.inputDeviceIndex = inputDeviceIndex;
@@ -39,21 +39,22 @@ class Speaker {
 
         transcriber.on("turn", (turn) => {
             if (!turn.transcript) {
-            return;
+                return;
             }
 
             if(this.speechBlocks.length == 0 || this.speechBlocks[this.speechBlocks.length - 1].isFinalized) {
-            this.speechBlocks.push(new SpeechBlock(""));
+                this.speechBlocks.push(new SpeechBlock());
             }
             
+            var speaker = this.speechBlocks[this.speechBlocks.length - 1];
+            speaker.text = turn.transcript;
+            speaker.dtmLastUpdate = new Date();
             if(turn.end_of_turn && turn.turn_is_formatted) {
-            console.log("End of Turn:", turn.transcript);
-            this.speechBlocks[this.speechBlocks.length - 1].text = turn.transcript;
-            this.speechBlocks[this.speechBlocks.length - 1].isFinalized = true;
+                speaker.isFinalized = true;
+                console.log(`[${speaker.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
             }
             else {
-            console.log("Turn:", turn.transcript);
-            this.speechBlocks[this.speechBlocks.length - 1].text = turn.transcript;
+                console.log(`[${speaker.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
             }
         });
 
@@ -75,14 +76,14 @@ class Speaker {
 
             // Stop recording and close connection using Ctrl-C.
             process.on("SIGINT", async function () {
-            console.log();
-            console.log("Stopping recording");
-            recording.stop();
+                console.log();
+                console.log("Stopping recording");
+                recording.stop();
 
-            console.log("Closing streaming transcript connection");
-            await transcriber.close();
+                console.log("Closing streaming transcript connection");
+                await transcriber.close();
 
-            process.exit();
+                process.exit();
             });
 
             recording.start();

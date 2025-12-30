@@ -1,11 +1,10 @@
 export { SpeechBlock };
 
 class SpeechBlock {
+    uuid = crypto.randomUUID();
     text = "";
-    when = "";
+    dtmLastUpdate = new Date();
     isFinalized = false;
     
-    constructor(when) {
-        this.when = when;
-    }
+    constructor() {}
 }

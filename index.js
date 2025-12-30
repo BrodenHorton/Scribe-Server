@@ -1,4 +1,3 @@
-import fs from "fs";
 import express from "express";
 import { SpeechBlock } from "./SpeechBlock.js";
 import { Speaker } from "./Speaker.js";
@@ -40,7 +39,47 @@ function speechBlockPrintInterval() {
 }
 
 app.get(`/all`, (req, res) => {
-  res.json(speakers);
+  var newSpeechBlocks = [];
+  for(var i = 0; i < speakers.length; i++) {
+    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j++) {
+      newSpeechBlocks.push({
+        speaker: speaker[i].inputDeviceIndex,
+        blockUuid: speaker[i].speechBlocks[j].uuid,
+        text: speaker[i].speechBlocks[j].text
+      });
+    }
+  }
+
+  const result = {
+    date: Date(),
+    speechBlocks: newSpeechBlocks
+  };
+
+  res.json(result);
+});
+
+app.get(`/after`, (req, res) => {
+  const dtmLastRequested = req.query.dtmLastRequested;
+  var newSpeechBlocks = [];
+  for(var i = 0; i < speakers.length; i++) {
+    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j++) {
+      if(speakers[i].speechBlocks[j].dtmLastUpdate < dtmLastRequested) {
+        break;
+      }
+      newSpeechBlocks.push({
+        speaker: speaker[i].inputDeviceIndex,
+        blockUuid: speaker[i].speechBlocks[j].uuid,
+        text: speaker[i].speechBlocks[j].text
+      });
+    }
+  }
+
+  const result = {
+    date: Date(),
+    speechBlocks: newSpeechBlocks
+  };
+
+  res.json(result);
 });
 
 app.listen(port, () => {
