@@ -6,7 +6,7 @@ export { Speaker };
 
 class Speaker {
     assemblyAiApiKey = "";
-    inputDeviceIndex = "";
+    inputDeviceIndex = 0;
     speechBlocks = []
     
     constructor(assemblyAiApiKey, inputDeviceIndex) {
@@ -67,9 +67,10 @@ class Speaker {
             console.log("Starting recording");
 
             const recording = recorder.record({
-            channels: 1,
-            sampleRate: CONNECTION_PARAMS.sampleRate,
-            audioType: "wav", // Linear PCM
+                inputDeviceIndex: this.inputDeviceIndex,
+                channels: 1,
+                sampleRate: CONNECTION_PARAMS.sampleRate,
+                audioType: "wav", // Linear PCM
             });
 
             Readable.toWeb(recording.stream()).pipeTo(transcriber.stream());

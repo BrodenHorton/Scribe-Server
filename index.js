@@ -8,8 +8,16 @@ const port = 3000;
 const masterKey = '4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT';
 const assemblyAiApiKey = 'b87610c4a70644f6a3abfc216e9a7204';
 
-var micCount = 1;
+var micCount = 2;
 var speakers = [];
+
+for(var i = 0; i < micCount; i++) {
+  var speaker = new Speaker(assemblyAiApiKey, i);
+  speakers.push(speaker);
+  speaker.run();
+}
+
+speechBlockPrintInterval();
 
 function speechBlockPrintInterval() {
   setInterval(() => {
@@ -30,14 +38,6 @@ function speechBlockPrintInterval() {
       });
   }, 10000);
 }
-
-for(var i = 0; i < micCount; i++) {
-  var speaker = new Speaker(assemblyAiApiKey, i.toString());
-  speakers.push(speaker);
-  speaker.run();
-}
-
-speechBlockPrintInterval();
 
 app.get(`/all`, (req, res) => {
   res.json(speakers);
