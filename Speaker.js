@@ -5,19 +5,17 @@ import { SpeechBlock } from "./SpeechBlock.js";
 export { Speaker };
 
 class Speaker {
-    assemblyAiApiKey = "";
     inputDeviceIndex = 0;
     speechBlocks = []
     
-    constructor(assemblyAiApiKey, inputDeviceIndex) {
-        this.assemblyAiApiKey = assemblyAiApiKey;
+    constructor(inputDeviceIndex) {
         this.inputDeviceIndex = inputDeviceIndex;
     }
 
-    async run() {
+    async run(assemblyAiApiKey) {
         const client = new AssemblyAI({
             // Replace with your chosen API key, this is the "default" account api key
-            apiKey: this.assemblyAiApiKey
+            apiKey: assemblyAiApiKey
         });
 
         const CONNECTION_PARAMS = {
@@ -45,7 +43,7 @@ class Speaker {
             }
 
             if(this.speechBlocks.length == 0 || this.speechBlocks[this.speechBlocks.length - 1].isFinalized) {
-            this.speechBlocks.push(new SpeechBlock());
+            this.speechBlocks.push(new SpeechBlock(""));
             }
             
             if(turn.end_of_turn && turn.turn_is_formatted) {

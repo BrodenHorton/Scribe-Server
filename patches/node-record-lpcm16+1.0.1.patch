@@ -1,14 +1,25 @@
+diff --git a/node_modules/node-record-lpcm16/index.js b/node_modules/node-record-lpcm16/index.js
+index f000044..7e5ebac 100644
+--- a/node_modules/node-record-lpcm16/index.js
++++ b/node_modules/node-record-lpcm16/index.js
+@@ -8,6 +8,7 @@ const recorders = require('./recorders')
+ class Recording {
+   constructor (options = {}) {
+     const defaults = {
++      inputDeviceIndex: 0,
+       sampleRate: 16000,
+       channels: 1,
+       compress: false,
 diff --git a/node_modules/node-record-lpcm16/recorders/sox.js b/node_modules/node-record-lpcm16/recorders/sox.js
-index 8ebfe2b..1c8b255 100644
+index 8ebfe2b..adffffb 100644
 --- a/node_modules/node-record-lpcm16/recorders/sox.js
 +++ b/node_modules/node-record-lpcm16/recorders/sox.js
-@@ -2,7 +2,8 @@ module.exports = (options) => {
+@@ -2,7 +2,7 @@ module.exports = (options) => {
    const cmd = 'sox'
  
    let args = [
 -    '--default-device',
-+    //'--default-device',
-+    '--type', 'waveaudio', '0', // audio type
++    '--type', 'waveaudio', options.inputDeviceIndex, // audio type
      '--no-show-progress', // show no progress
      '--rate', options.sampleRate, // sample rate
      '--channels', options.channels, // channels

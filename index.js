@@ -12,9 +12,9 @@ var micCount = 2;
 var speakers = [];
 
 for(var i = 0; i < micCount; i++) {
-  var speaker = new Speaker(assemblyAiApiKey, i);
+  var speaker = new Speaker(i);
   speakers.push(speaker);
-  speaker.run();
+  speaker.run(assemblyAiApiKey);
 }
 
 speechBlockPrintInterval();

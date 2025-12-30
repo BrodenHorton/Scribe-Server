@@ -2,7 +2,10 @@ export { SpeechBlock };
 
 class SpeechBlock {
     text = "";
+    when = "";
     isFinalized = false;
     
-    constructor() {}
+    constructor(when) {
+        this.when = when;
+    }
 }
