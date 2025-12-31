@@ -46,15 +46,14 @@ class Speaker {
                 this.speechBlocks.push(new SpeechBlock());
             }
             
-            var speaker = this.speechBlocks[this.speechBlocks.length - 1];
-            speaker.text = turn.transcript;
-            speaker.dtmLastUpdate = new Date();
+            var speechBlock = this.speechBlocks[this.speechBlocks.length - 1];
+            speechBlock.updateSpeechBlock(turn.transcript);
             if(turn.end_of_turn && turn.turn_is_formatted) {
-                speaker.isFinalized = true;
-                console.log(`[${speaker.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
+                speechBlock.isFinalized = true;
+                console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
             }
             else {
-                console.log(`[${speaker.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
+                console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
             }
         });
 

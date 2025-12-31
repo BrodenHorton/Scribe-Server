@@ -7,4 +7,9 @@ class SpeechBlock {
     isFinalized = false;
     
     constructor() {}
+
+    updateSpeechBlock(text) {
+        this.text = text;
+        this.dtmLastUpdate = new Date();
+    }
 }

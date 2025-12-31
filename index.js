@@ -10,13 +10,28 @@ const assemblyAiApiKey = 'b87610c4a70644f6a3abfc216e9a7204';
 var micCount = 2;
 var speakers = [];
 
-for(var i = 0; i < micCount; i++) {
-  var speaker = new Speaker(i);
-  speakers.push(speaker);
-  speaker.run(assemblyAiApiKey);
-}
+// for(var i = 0; i < micCount; i++) {
+//   var speaker = new Speaker(i);
+//   speakers.push(speaker);
+//   speaker.run(assemblyAiApiKey);
+// }
 
-speechBlockPrintInterval();
+//speechBlockPrintInterval();
+
+populateTestData();
+
+function populateTestData() {
+  var speaker1 = new Speaker(0);
+  var speechBlock1 = new SpeechBlock();
+  speechBlock1.updateSpeechBlock("Hello, my name is Miku.");
+  speaker1.speechBlocks.push(speechBlock1);
+  speakers.push(speaker1);
+  var speaker2 = new Speaker(1);
+  var speechBlock2 = new SpeechBlock();
+  speechBlock2.updateSpeechBlock("It's nice to meet you Miku.");
+  speaker2.speechBlocks.push(speechBlock2);
+  speakers.push(speaker2);
+}
 
 function speechBlockPrintInterval() {
   setInterval(() => {
@@ -41,11 +56,11 @@ function speechBlockPrintInterval() {
 app.get(`/all`, (req, res) => {
   var newSpeechBlocks = [];
   for(var i = 0; i < speakers.length; i++) {
-    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j++) {
+    for(var j = 0; j < speakers[i].speechBlocks.length; j++) {
       newSpeechBlocks.push({
-        speaker: speaker[i].inputDeviceIndex,
-        blockUuid: speaker[i].speechBlocks[j].uuid,
-        text: speaker[i].speechBlocks[j].text
+        speaker: speakers[i].inputDeviceIndex,
+        blockUuid: speakers[i].speechBlocks[j].uuid,
+        text: speakers[i].speechBlocks[j].text
       });
     }
   }
@@ -59,17 +74,18 @@ app.get(`/all`, (req, res) => {
 });
 
 app.get(`/after`, (req, res) => {
-  const dtmLastRequested = req.query.dtmLastRequested;
+  const dtmLastRequested = req.query.lastRequested;
+  console.log(`dtmLastRequested: ${dtmLastRequested}`);
   var newSpeechBlocks = [];
   for(var i = 0; i < speakers.length; i++) {
-    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j++) {
+    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j--) {
       if(speakers[i].speechBlocks[j].dtmLastUpdate < dtmLastRequested) {
         break;
       }
       newSpeechBlocks.push({
-        speaker: speaker[i].inputDeviceIndex,
-        blockUuid: speaker[i].speechBlocks[j].uuid,
-        text: speaker[i].speechBlocks[j].text
+        speaker: speakers[i].inputDeviceIndex,
+        blockUuid: speakers[i].speechBlocks[j].uuid,
+        text: speakers[i].speechBlocks[j].text
       });
     }
   }
