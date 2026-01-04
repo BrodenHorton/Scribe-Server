@@ -10,28 +10,13 @@ const assemblyAiApiKey = 'b87610c4a70644f6a3abfc216e9a7204';
 var micCount = 2;
 var speakers = [];
 
-// for(var i = 0; i < micCount; i++) {
-//   var speaker = new Speaker(i);
-//   speakers.push(speaker);
-//   speaker.run(assemblyAiApiKey);
-// }
-
-//speechBlockPrintInterval();
-
-populateTestData();
-
-function populateTestData() {
-  var speaker1 = new Speaker(0);
-  var speechBlock1 = new SpeechBlock();
-  speechBlock1.updateSpeechBlock("Hello, my name is Miku.");
-  speaker1.speechBlocks.push(speechBlock1);
-  speakers.push(speaker1);
-  var speaker2 = new Speaker(1);
-  var speechBlock2 = new SpeechBlock();
-  speechBlock2.updateSpeechBlock("It's nice to meet you Miku.");
-  speaker2.speechBlocks.push(speechBlock2);
-  speakers.push(speaker2);
+for(var i = 0; i < micCount; i++) {
+  var speaker = new Speaker(i);
+  speakers.push(speaker);
+  speaker.run(assemblyAiApiKey);
 }
+
+speechBlockPrintInterval();
 
 function speechBlockPrintInterval() {
   setInterval(() => {
@@ -65,21 +50,34 @@ app.get(`/all`, (req, res) => {
     }
   }
 
+  const fullDate = new Date();
+  var dateResult = {
+    year: fullDate.getFullYear(),
+    month: fullDate.getMonth() + 1,
+    day: fullDate.getDate(),
+    hours: fullDate.getHours(),
+    minutes: fullDate.getMinutes(),
+    seconds: fullDate.getSeconds(),
+    milliseconds: fullDate.getMilliseconds(),
+    timeZoneOffset: fullDate.getTimezoneOffset()
+  }
+
   const result = {
-    date: Date(),
-    speechBlocks: newSpeechBlocks
+    date: dateResult,
+    speechLines: newSpeechBlocks
   };
 
   res.json(result);
 });
 
 app.get(`/after`, (req, res) => {
-  const dtmLastRequested = req.query.lastRequested;
-  console.log(`dtmLastRequested: ${dtmLastRequested}`);
+  const lastRequested = new Date(req.query.lastRequested);
+  console.log(`lastRequested: ${req.query.lastRequested}`);
+  console.log(`lastRequested Date Object: ${lastRequested}`);
   var newSpeechBlocks = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j--) {
-      if(speakers[i].speechBlocks[j].dtmLastUpdate < dtmLastRequested) {
+      if(speakers[i].speechBlocks[j].dtmLastUpdate < lastRequested) {
         break;
       }
       newSpeechBlocks.push({
@@ -90,9 +88,21 @@ app.get(`/after`, (req, res) => {
     }
   }
 
+  const fullDate = new Date();
+  var dateResult = {
+    year: fullDate.getFullYear(),
+    month: fullDate.getMonth() + 1,
+    day: fullDate.getDate(),
+    hours: fullDate.getHours(),
+    minutes: fullDate.getMinutes(),
+    seconds: fullDate.getSeconds(),
+    milliseconds: fullDate.getMilliseconds(),
+    timeZoneOffset: fullDate.getTimezoneOffset()
+  }
+  
   const result = {
-    date: Date(),
-    speechBlocks: newSpeechBlocks
+    date: dateResult,
+    speechLines: newSpeechBlocks
   };
 
   res.json(result);

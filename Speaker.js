@@ -53,7 +53,7 @@ class Speaker {
                 console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
             }
             else {
-                console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
+                //console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
             }
         });
 
