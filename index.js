@@ -1,5 +1,5 @@
 import express from "express";
-import { SpeechBlock } from "./SpeechBlock.js";
+import { SpeechLine } from "./SpeechLine.js";
 import { Speaker } from "./Speaker.js";
 
 const app = express();
@@ -20,16 +20,16 @@ speechBlockPrintInterval();
 
 function speechBlockPrintInterval() {
   setInterval(() => {
-    console.log("\n==== Speech Blocks ====");
+    console.log("\n==== Speech Lines ====");
     console.log(`Number of Speakers: ${speakers.length}`);
     var speakerCount = 1;
     speakers.filter((element) => element instanceof Speaker)
       .forEach(speaker => {
-        console.log(`Number of Speech Blocks for Speaker ${speaker.inputDeviceIndex}: ${speaker.speechBlocks.length}`);
+        console.log(`Number of Speech Lines for Speaker ${speaker.inputDeviceIndex}: ${speaker.speechLines.length}`);
           var speechBlockCount = 1;
-          speaker.speechBlocks.filter((element => element instanceof SpeechBlock))
+          speaker.speechLines.filter((element => element instanceof SpeechLine))
             .forEach(speechBlock => {
-              console.log(`Block: ${speechBlockCount}`);
+              console.log(`Line: ${speechBlockCount}`);
               console.log(`${speechBlock.text}\n`);
               speechBlockCount++;
             })
@@ -39,12 +39,12 @@ function speechBlockPrintInterval() {
 }
 
 app.get(`/all`, (req, res) => {
-  var newSpeechBlocks = [];
+  var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = 0; j < speakers[i].speechBlocks.length; j++) {
-      newSpeechBlocks.push({
+      newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
-        blockUuid: speakers[i].speechBlocks[j].uuid,
+        lineUuid: speakers[i].speechBlocks[j].uuid,
         text: speakers[i].speechBlocks[j].text
       });
     }
@@ -64,7 +64,7 @@ app.get(`/all`, (req, res) => {
 
   const result = {
     date: dateResult,
-    speechLines: newSpeechBlocks
+    speechLines: newSpeechLines
   };
 
   res.json(result);
@@ -74,15 +74,15 @@ app.get(`/after`, (req, res) => {
   const lastRequested = new Date(req.query.lastRequested);
   console.log(`lastRequested: ${req.query.lastRequested}`);
   console.log(`lastRequested Date Object: ${lastRequested}`);
-  var newSpeechBlocks = [];
+  var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j--) {
       if(speakers[i].speechBlocks[j].dtmLastUpdate < lastRequested) {
         break;
       }
-      newSpeechBlocks.push({
+      newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
-        blockUuid: speakers[i].speechBlocks[j].uuid,
+        lineUuid: speakers[i].speechBlocks[j].uuid,
         text: speakers[i].speechBlocks[j].text
       });
     }
@@ -102,7 +102,7 @@ app.get(`/after`, (req, res) => {
   
   const result = {
     date: dateResult,
-    speechLines: newSpeechBlocks
+    speechLines: newSpeechLines
   };
 
   res.json(result);

@@ -1,12 +1,12 @@
 import { AssemblyAI } from "assemblyai";
 import { Readable } from "stream";
 import recorder from "node-record-lpcm16";
-import { SpeechBlock } from "./SpeechBlock.js";
+import { SpeechLine } from "./SpeechLine.js";
 export { Speaker };
 
 class Speaker {
     inputDeviceIndex = 0;
-    speechBlocks = [];
+    speechLines = [];
     
     constructor(inputDeviceIndex) {
         this.inputDeviceIndex = inputDeviceIndex;
@@ -42,15 +42,15 @@ class Speaker {
                 return;
             }
 
-            if(this.speechBlocks.length == 0 || this.speechBlocks[this.speechBlocks.length - 1].isFinalized) {
-                this.speechBlocks.push(new SpeechBlock());
+            if(this.speechLines.length == 0 || this.speechLines[this.speechLines.length - 1].isFinalized) {
+                this.speechLines.push(new SpeechLine());
             }
             
-            var speechBlock = this.speechBlocks[this.speechBlocks.length - 1];
-            speechBlock.updateSpeechBlock(turn.transcript);
+            var speechLine = this.speechLines[this.speechLines.length - 1];
+            speechLine.updateSpeechBlock(turn.transcript);
             if(turn.end_of_turn && turn.turn_is_formatted) {
-                speechBlock.isFinalized = true;
-                console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
+                speechLine.isFinalized = true;
+                console.log(`[${speechLine.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
             }
             else {
                 //console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);

@@ -1,6 +1,6 @@
-export { SpeechBlock };
+export { SpeechLine };
 
-class SpeechBlock {
+class SpeechLine {
     uuid = crypto.randomUUID();
     text = "";
     dtmLastUpdate = new Date();
