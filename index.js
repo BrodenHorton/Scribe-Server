@@ -41,11 +41,11 @@ function speechBlockPrintInterval() {
 app.get(`/all`, (req, res) => {
   var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
-    for(var j = 0; j < speakers[i].speechBlocks.length; j++) {
+    for(var j = 0; j < speakers[i].speechLines.length; j++) {
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
-        lineUuid: speakers[i].speechBlocks[j].uuid,
-        text: speakers[i].speechBlocks[j].text
+        lineUuid: speakers[i].speechLines[j].uuid,
+        text: speakers[i].speechLines[j].text
       });
     }
   }
@@ -76,14 +76,14 @@ app.get(`/after`, (req, res) => {
   console.log(`lastRequested Date Object: ${lastRequested}`);
   var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
-    for(var j = speakers[i].speechBlocks.length - 1; j >= 0; j--) {
-      if(speakers[i].speechBlocks[j].dtmLastUpdate < lastRequested) {
+    for(var j = speakers[i].speechLines.length - 1; j >= 0; j--) {
+      if(speakers[i].speechLines[j].dtmLastUpdate < lastRequested) {
         break;
       }
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
-        lineUuid: speakers[i].speechBlocks[j].uuid,
-        text: speakers[i].speechBlocks[j].text
+        lineUuid: speakers[i].speechLines[j].uuid,
+        text: speakers[i].speechLines[j].text
       });
     }
   }
