@@ -45,7 +45,8 @@ app.get(`/all`, (req, res) => {
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
         lineUuid: speakers[i].speechLines[j].uuid,
-        text: speakers[i].speechLines[j].text
+        text: speakers[i].speechLines[j].text,
+        isFinalized: speakers[i].speechLines[j].isFinalized
       });
     }
   }
@@ -83,7 +84,8 @@ app.get(`/after`, (req, res) => {
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
         lineUuid: speakers[i].speechLines[j].uuid,
-        text: speakers[i].speechLines[j].text
+        text: speakers[i].speechLines[j].text,
+        isFinalized: speakers[i].speechLines[j].isFinalized
       });
     }
   }
