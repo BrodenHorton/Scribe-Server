@@ -73,8 +73,6 @@ app.get(`/all`, (req, res) => {
 
 app.get(`/after`, (req, res) => {
   const lastRequested = new Date(req.query.lastRequested);
-  console.log(`lastRequested: ${req.query.lastRequested}`);
-  console.log(`lastRequested Date Object: ${lastRequested}`);
   var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = speakers[i].speechLines.length - 1; j >= 0; j--) {

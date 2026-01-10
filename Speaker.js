@@ -52,9 +52,6 @@ class Speaker {
                 speechLine.isFinalized = true;
                 console.log(`[${speechLine.dtmLastUpdate.toLocaleString()}] End of Turn: ${turn.transcript}`);
             }
-            else {
-                //console.log(`[${speechBlock.dtmLastUpdate.toLocaleString()}] Turn: ${turn.transcript}`);
-            }
         });
 
         try {
