@@ -20,7 +20,8 @@ class Speaker {
 
         const CONNECTION_PARAMS = {
             sampleRate: 16000,
-            formatTurns: true
+            formatTurns: true,
+            minEndOfTurnSilenceWhenConfident: 750
         }
 
         const transcriber = client.streaming.transcriber(CONNECTION_PARAMS);
