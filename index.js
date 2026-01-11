@@ -42,10 +42,21 @@ app.get(`/all`, (req, res) => {
   var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = 0; j < speakers[i].speechLines.length; j++) {
+      var createdResult = {
+        year: speakers[i].speechLines[j].created.getFullYear(),
+        month: speakers[i].speechLines[j].created.getMonth() + 1,
+        day: speakers[i].speechLines[j].created.getDate(),
+        hours: speakers[i].speechLines[j].created.getHours(),
+        minutes: speakers[i].speechLines[j].created.getMinutes(),
+        seconds: speakers[i].speechLines[j].created.getSeconds(),
+        milliseconds: speakers[i].speechLines[j].created.getMilliseconds(),
+        timeZoneOffset: speakers[i].speechLines[j].created.getTimezoneOffset()
+      }
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
         lineUuid: speakers[i].speechLines[j].uuid,
         text: speakers[i].speechLines[j].text,
+        created: createdResult,
         isFinalized: speakers[i].speechLines[j].isFinalized
       });
     }
@@ -79,10 +90,22 @@ app.get(`/after`, (req, res) => {
       if(speakers[i].speechLines[j].dtmLastUpdate < lastRequested) {
         break;
       }
+
+      var createdResult = {
+        year: speakers[i].speechLines[j].created.getFullYear(),
+        month: speakers[i].speechLines[j].created.getMonth() + 1,
+        day: speakers[i].speechLines[j].created.getDate(),
+        hours: speakers[i].speechLines[j].created.getHours(),
+        minutes: speakers[i].speechLines[j].created.getMinutes(),
+        seconds: speakers[i].speechLines[j].created.getSeconds(),
+        milliseconds: speakers[i].speechLines[j].created.getMilliseconds(),
+        timeZoneOffset: speakers[i].speechLines[j].created.getTimezoneOffset()
+      }
       newSpeechLines.push({
         speaker: speakers[i].inputDeviceIndex,
         lineUuid: speakers[i].speechLines[j].uuid,
         text: speakers[i].speechLines[j].text,
+        created: createdResult,
         isFinalized: speakers[i].speechLines[j].isFinalized
       });
     }

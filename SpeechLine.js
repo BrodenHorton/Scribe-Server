@@ -3,6 +3,7 @@ export { SpeechLine };
 class SpeechLine {
     uuid = crypto.randomUUID();
     text = "";
+    created = new Date()
     dtmLastUpdate = new Date();
     isFinalized = false;
     
