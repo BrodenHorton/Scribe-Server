@@ -1,11 +1,18 @@
 import express from "express";
+import https from "https";
+import path from "path";
+import fs from "fs";
 import { SpeechLine } from "./SpeechLine.js";
 import { Speaker } from "./Speaker.js";
 
 const app = express();
 const port = 3000;
-const masterKey = '4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT';
 const assemblyAiApiKey = 'b87610c4a70644f6a3abfc216e9a7204';
+
+const sslServer = https.createServer({
+  key: fs.readFileSync(path.join(import.meta.dirname, 'cert', 'key.pem')),
+  cert: fs.readFileSync(path.join(import.meta.dirname, 'cert', 'cert.pem'))
+}, app);
 
 var micCount = 2;
 var speakers = [];
@@ -39,6 +46,7 @@ function speechBlockPrintInterval() {
 }
 
 app.get(`/all`, (req, res) => {
+  console.log("Resquest has been received for /all !!!!")
   var newSpeechLines = [];
   for(var i = 0; i < speakers.length; i++) {
     for(var j = 0; j < speakers[i].speechLines.length; j++) {
@@ -130,6 +138,10 @@ app.get(`/after`, (req, res) => {
 
   res.json(result);
 });
+
+/* sslServer.listen(port, () => {
+    console.log(`Successfully started server on port ${port}.`);
+}); */
 
 app.listen(port, () => {
     console.log(`Successfully started server on port ${port}.`);
